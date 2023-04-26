@@ -2,7 +2,8 @@
 
 namespace App\Api;
 
-use app\Api\Drivers\ReqresDriver;
+use App\Api\Drivers\ReqresDriver;
+use App\Api\Drivers\NullDriver;
 use Illuminate\Support\Manager;
 
 class ApiManager extends Manager {
@@ -10,22 +11,29 @@ class ApiManager extends Manager {
     /**
      * Get a driver instance.
      *
-     * @param  string|null  $name
+     * @param string|null $name
      * @return mixed
      */
-    public function channel($name = null)
-    {
+    public function channel(string $name = null): mixed {
         return $this->driver($name);
     }
 
     /**
      * Create a Reqres driver instance.
      *
-     * @return \App\Api\Drivers\ReqresDriver;
+     * @return ReqresDriver;
      */
-    public function createReqresDriver()
-    {
+    public function createReqresDriver(): ReqresDriver {
         return new ReqresDriver();
+    }
+
+    /**
+     * Create a null driver instance.
+     *
+     * @return NullDriver;
+     */
+    public function createNullDriver(): NullDriver {
+        return new NullDriver();
     }
 
     /**
@@ -33,9 +41,8 @@ class ApiManager extends Manager {
      *
      * @return string
      */
-    public function getDefaultDriver()
-    {
-        return $this->app['config']['api.default'] ?? 'null';
+    public function getDefaultDriver(): string {
+        return config('api.default') ?? 'null';
     }
 
 
