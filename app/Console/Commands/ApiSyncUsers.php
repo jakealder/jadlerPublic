@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Api\Facades\Api;
 use Illuminate\Console\Command;
 
 class ApiSyncUsers extends Command
@@ -25,6 +26,7 @@ class ApiSyncUsers extends Command
      */
     public function handle()
     {
-        //
+        $users = Api::getUsers();
+        dd($users);
     }
 }

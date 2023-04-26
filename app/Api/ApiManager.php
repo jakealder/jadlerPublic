@@ -25,9 +25,7 @@ class ApiManager extends Manager {
      */
     public function createReqresDriver()
     {
-        return new ReqresDriver(
-            $this->createReqresDriver()
-        );
+        return new ReqresDriver();
     }
 
     /**
