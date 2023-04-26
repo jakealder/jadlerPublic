@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Api\Drivers;
+namespace App\Api\Drivers;
 
 use App\Api\Contracts\Api;
 use Illuminate\Console\View\Components\Alert;

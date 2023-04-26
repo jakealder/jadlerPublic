@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Api\Contracts;
+namespace App\Api\Contracts;
 interface Api
 {
     /**
