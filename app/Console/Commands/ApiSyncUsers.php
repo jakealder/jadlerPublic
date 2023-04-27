@@ -28,7 +28,7 @@ class ApiSyncUsers extends Command
     /**
      * The main method that executes the command.
      *
-     * @return bool
+     * @return void
      */
     public function handle(): void {
         // Retrieve users from the API
