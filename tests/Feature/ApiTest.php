@@ -2,30 +2,18 @@
 
 namespace Tests\Feature;
 
+use App\Api\Facades\Api;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ApiTest extends TestCase
 {
+    use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
+    /** @test */
     public function get_users_from_api() {
-
+        $response = Api::getUsers();
+        $this->assertNotEmpty($response['message']['data']);
     }
-
-    public function add_users_from_api() {
-
-    }
-
-
 }

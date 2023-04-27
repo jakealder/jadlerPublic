@@ -29,35 +29,39 @@ class ApiSyncUsers extends Command
      * The main method that executes the command.
      *
      * @return bool
-     * @throws ValidationException
      */
-    public function handle(): bool {
+    public function handle(): void {
         // Retrieve users from the API
         $users = Api::getUsers();
 
         // Check if the API returned an error
         if ($users['status'] === 'error') {
             $this->error($users['message']);
-            return false;
+            return;
         }
 
         // Check if the data key exists
-        if(!isset($users['message']['data'])) {
+        if(!isset($users['message']['data']) || !count($users['message']['data'])) {
             $this->error('No users received');
-            return false;
-        }
-
-        // Check if the data array is empty
-        if (!count($users['message']['data'])) {
-            $this->error('No users received');
-            return false;
+            return;
         }
 
         // Display success message if data is received
         $this->info('Response successfully received, reading data now.');
 
+        $response = $this->updateOrCreateUsers($users['message']['data']);
+
+        if ($response === true) {
+            $this->info('User data successfully synced.');
+        } else {
+            $this->error($response);
+        }
+    }
+
+    public function updateOrCreateUsers($users): bool {
+
         // Set up validation rules for the user data
-        $validator = Validator::make($users['message']['data'], [
+        $validatedUsers = Validator::make($users, [
             '*.first_name' => 'required|max:255',
             '*.last_name' => 'required|max:255',
             '*.email' => 'required|email|max:255',
@@ -71,14 +75,12 @@ class ApiSyncUsers extends Command
         ]);
 
         // Check if the validation fails
-        if ($validator->stopOnFirstFailure()->fails()) {
-            $this->error($validator->errors()->first());
-            return false;
+        if ($validatedUsers->stopOnFirstFailure()->fails()) {
+            return $validatedUsers->errors()->first();
         }
 
         // Iterate over the validated user data
-        foreach ($validator->validated() as $user) {
-
+        foreach ($validatedUsers->validated() as $user) {
             // Update or create the user in the database
             User::updateOrCreate([
                 'email' => $user['email']
@@ -89,9 +91,7 @@ class ApiSyncUsers extends Command
             ]);
         }
 
-        // Display success message if syncing is complete
-        $this->info('User data successfully synced.');
-
         return true;
     }
+
 }

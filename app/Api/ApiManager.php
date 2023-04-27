@@ -2,6 +2,7 @@
 
 namespace App\Api;
 
+use App\Api\Contracts\Api;
 use App\Api\Drivers\ReqresDriver;
 use App\Api\Drivers\NullDriver;
 use Illuminate\Support\Manager;
@@ -23,7 +24,7 @@ class ApiManager extends Manager {
      *
      * @return ReqresDriver;
      */
-    public function createReqresDriver(): ReqresDriver {
+    public function createReqresDriver(): Api {
         return new ReqresDriver();
     }
 
@@ -32,7 +33,7 @@ class ApiManager extends Manager {
      *
      * @return NullDriver;
      */
-    public function createNullDriver(): NullDriver {
+    public function createNullDriver(): Api {
         return new NullDriver();
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static getUsers()
+ * @method static channel(string $string)
  */
 class Api extends Facade {
     /**

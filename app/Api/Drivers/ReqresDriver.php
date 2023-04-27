@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Log;
 class ReqresDriver implements Api
 {
 
-    public function __construct() {
-
-    }
-
     /**
      * @param int $page
      * @param int $perPage
